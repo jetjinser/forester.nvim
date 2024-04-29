@@ -38,25 +38,25 @@ local pick_by_title = function(trees, opts)
     return entry
   end
   pickers
-    .new(opts, {
-      prompt_title = "Pick a tree",
-      finder = finders.new_table({
-        results = trees,
-        entry_maker = entry_maker,
-      }),
-      sorter = conf.generic_sorter(opts),
-      attach_mappings = function(prompt_bufnr, map)
-        actions.select_default:replace(function()
-          actions.close(prompt_bufnr)
-          local selection = action_state.get_selected_entry()
-          local search_path = selection.dir .. "/.*"
-          local file = vim.fn.findfile(selection.addr .. ".tree", search_path)
-          vim.cmd("edit " .. file)
-        end)
-        return true
-      end,
-    })
-    :find()
+      .new(opts, {
+        prompt_title = "Pick a tree",
+        finder = finders.new_table({
+          results = trees,
+          entry_maker = entry_maker,
+        }),
+        sorter = conf.generic_sorter(opts),
+        attach_mappings = function(prompt_bufnr, map)
+          actions.select_default:replace(function()
+            actions.close(prompt_bufnr)
+            local selection = action_state.get_selected_entry()
+            local search_path = selection.dir .. "/.*"
+            local file = vim.fn.findfile(selection.addr .. ".tree", search_path)
+            vim.cmd("edit " .. file)
+          end)
+          return true
+        end,
+      })
+      :find()
 end
 
 M.pick_by_title = pick_by_title

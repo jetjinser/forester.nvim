@@ -10,7 +10,7 @@ local util = require("forester.util")
 local Path = require("plenary.path")
 local Scan = require("plenary.scandir")
 local forester = require("forester.bindings")
-local navigation = require("forester.navigation")
+-- local navigation = require("forester.navigation")
 local M = {}
 
 local contains_match = function(tbl, str)
@@ -91,24 +91,24 @@ M.commands = {
   build = function(opts)
     forester.build(opts)
   end,
-  browse = function(opts)
-    local trees = all_trees(opts)
-    if #trees == 0 then
-      do
-        vim.print("No trees found!")
-      end
-    elseif #trees == 1 then
-      do
-        local path = trees[1].addr .. ".tree"
-        vim.print("Only found one tree. Opening...")
-        vim.cmd("edit " .. vim.fn.findfile(path))
-      end
-    else
-      do
-        navigation.pick_by_title(trees, {})
-      end
-    end
-  end,
+  -- browse = function(opts)
+  --   local trees = all_trees(opts)
+  --   if #trees == 0 then
+  --     do
+  --       vim.print("No trees found!")
+  --     end
+  --   elseif #trees == 1 then
+  --     do
+  --       local path = trees[1].addr .. ".tree"
+  --       vim.print("Only found one tree. Opening...")
+  --       vim.cmd("edit " .. vim.fn.findfile(path))
+  --     end
+  --   else
+  --     do
+  --       navigation.pick_by_title(trees, {})
+  --     end
+  --   end
+  -- end,
 
   new = function(opts)
     local prefixes = all_prefixes(opts)

@@ -1,16 +1,10 @@
-local api = vim.api
 local CompletionSource = require("forester.completion")
 local Commands = require("forester.commands")
-local Forester = require("forester.bindings")
-local Preview = require("forester.preview")
-local util = require("forester.util")
-local job = require("plenary.job")
-
-local split_path = util.split_path
 
 local M = {}
 
 local function add_treesitter_config()
+  ---@class ParserInfo[]
   local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
   parser_config.forester = {
     install_info = {
@@ -25,11 +19,11 @@ local function add_treesitter_config()
   vim.treesitter.language.register("forester", "forester")
 end
 
-local function setup(config)
+local function setup(opts)
+  ---@diagnostic disable-next-line: redefined-local
+  local opts = opts or { tree_dirs = { "trees" } }
+
   vim.filetype.add({ extension = { tree = "forester" }, pattern = { ["*.tree"] = "forester" } })
-  if not config then
-    config = { opts = { tree_dirs = { "trees" } } }
-  end
 
   local cmp = require("cmp")
 
@@ -38,16 +32,14 @@ local function setup(config)
     sources = { { name = "forester", dup = 0 } },
   })
 
-  local opts = config.opts
-
   add_treesitter_config()
-  for k, v in pairs(opts.tree_dirs) do
+  for _, v in pairs(opts.tree_dirs) do
     vim.opt.path:append(v)
   end
   vim.opt.suffixesadd:prepend(".tree")
 
   vim.api.nvim_create_user_command("Forester", function(cmd)
-    local prefix, args = Commands.parse(cmd.args)
+    local prefix, _ = Commands.parse(cmd.args)
     Commands.cmd(prefix, opts)
   end, {
     bar = true,
