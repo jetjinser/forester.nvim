@@ -2,7 +2,7 @@
 
 
 [
- "\\" 
+ "\\"
  "("
  ")"
  "{"
@@ -11,7 +11,7 @@
  "]"
 ] @punctuation.bracket
 
-(paragraph "p" @function.builtin)
+(p "p" @function.builtin)
 (li "li" @markup.list)
 (ul "ul"  @markup.list)
 (ol "ol"  @markup.list)
